@@ -1,0 +1,52 @@
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus
+input:-webkit-autofill, 
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus, button, input {
+	font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+	border: 2px solid white;
+	-webkit-text-fill-color: white;
+	-webkit-box-shadow: 0 0 0px 1000px #000 inset;
+	transition: background-color 5000s ease-in-out 0s;
+	margin: 3px;
+}
+
+body {
+	color: white;
+	background: #333;
+	color: #fff;
+	font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+	font-size: 2em;
+}
+
+form {
+	margin: 0px;
+	padding: 0px;
+}
+
+#loginInterface {
+	text-align: center;
+	margin: 0px;
+	padding: 0px;
+	position: relative;
+	width: 25%;
+	left: 37.5%;
+}
+
+.banner {
+	font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+	font-size: 25px;
+	border: 3px solid white;
+	color: white;
+	background-color: red;
+	margin: 0px;
+	padding: 4px;
+	width: 95%;
+	position: relative;
+	left: 2.5%;
+}

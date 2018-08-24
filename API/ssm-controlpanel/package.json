@@ -1,0 +1,25 @@
+{
+  "name": "ssm-loader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "cookie-parser": "^1.4.3",
+    "crypto": "^1.0.1",
+    "domutils": "^1.6.2",
+    "express": "^4.16.1",
+    "fs": "^0.0.1-security",
+    "http": "^0.0.0",
+    "htmlparser-to-html": "^0.0.6",
+    "htmlparser2": "^3.9.2",
+    "mongodb": "^2.2.31",
+    "sat": "^0.6.0",
+    "socket.io": "^2.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index"
+  },
+  "author": "Hexcede",
+  "license": "ISC"
+}

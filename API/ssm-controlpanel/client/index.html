@@ -1,0 +1,82 @@
+<head>
+<script src="/_js/socket.io.js"></script>
+<title>SSM System Control Panel</title>
+<link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+
+<body>
+	<noscript><div class="banner" style="">Please enable javascript!</div></noscript>
+	<div class="banner" id="noConnection" style="display: none;">You have lost connection to SSM... You will be reconnected as soon as possible.</div>
+	<div id="loginInterface">
+		<h3>Login</h3>
+		Username: <input type="text" id="username"></input><br>
+		Password: <input type="password" id="key"></input><br>
+		<button type="submit" id="submit">Login</button>
+	</div>
+	<canvas id="SSM_Screen" style="position: absolute; left: 0px; top: 0px; z-index: -1;">
+		
+	</canvas>
+	<script>
+		var fps = 60
+		var clientData = {}
+		clientData.CameraData = []
+		
+		var canv = document.getElementById("SSM_Screen")
+		var ctx
+		if (canv) {
+			ctx = canv.getContext('2d')
+		}
+		var canvWidth = window.innerWidth/3
+		var canvHeight = window.innerHeight/3
+		var restarting = false
+		var socket = io()
+		
+		document.getElementById("submit").onclick = function() {
+			socket.emit("login", {Username: document.getElementById("username").value, Key: document.getElementById("key").value})
+		}
+		
+		socket.on("user_loaded", function(data) { // Data is information about user (will be a completely default user)
+			if (restarting)
+				window.location.reload()
+			user = data
+		})
+		socket.on("disconnect", function() {
+			restarting = true
+			document.getElementById("noConnection").style.display = ""
+		})
+		socket.on("logged_in", function(data) { // Data is information about user with login info (called immediately after login or a user goes to another page)
+			if (restarting)
+				window.location.reload()
+			user = data
+		})
+		socket.on("refresh", function() {
+			window.location.reload()
+		})
+		socket.on("SSM_connect", function() {
+			document.getElementById("loginInterface").style.display = "none"
+		})
+		socket.on("update", function(data) {
+			clientData[data.Index] = data.Value
+		})
+		setInterval(function() {
+			if (!canv || !ctx) {
+				canv = document.getElementById("SSM_Screen")
+				ctx = canv.getContext('2d')
+			}
+			canv.width = canvWidth
+			canv.height = canvHeight
+			canv.style.height = canvHeight-1+"px"
+			canv.style.width = canvWidth-1+"px"
+			ctx.clearRect(0, 0, canvWidth, canvHeight)
+			for (var k in clientData.CameraData.Pixels) {
+				var p = clientData.CameraData.Pixels[k]
+				ctx.save()
+				ctx.globalAlpha = (p.a || 255/clientData.CameraData.Color_Resolution)*clientData.CameraData.Color_Resolution
+				ctx.fillStyle = "rgb("+p.r*clientData.CameraData.Color_Resolution+", "+p.g*clientData.CameraData.Color_Resolution+", "+p.b*clientData.CameraData.Color_Resolution+")"
+				ctx.translate(p.x*(canvWidth/clientData.CameraData.Width), p.y*(canvHeight/clientData.CameraData.Height))
+				ctx.fillRect(0, 0, canvWidth/clientData.CameraData.Width, canvHeight/clientData.CameraData.Height) // One pixel
+				ctx.restore()
+			}
+		}, (1/fps)*1000)
+		</script>
+</body>
